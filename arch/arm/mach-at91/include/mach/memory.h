@@ -23,4 +23,25 @@
 
 #include <mach/hardware.h>
 
+#ifdef CONFIG_SPARSEMEM
+
+#if defined(CONFIG_ARCH_AT91SAM9G45)
+#define MAX_PHYSMEM_BITS        31
+#define SECTION_SIZE_BITS       27
+
+/* bank page offsets */
+#define PAGE_OFFSET1    0xc8000000
+
+#define __phys_to_virt(phys)                                            \
+        ((phys) >= 0x70000000 ? (phys) - 0x70000000 + PAGE_OFFSET1 :    \
+         (phys) + PAGE_OFFSET)
+
+#define __virt_to_phys(virt)                                            \
+         ((virt) >= PAGE_OFFSET1 ? (virt) - PAGE_OFFSET1 + 0x70000000 : \
+          (virt) - PAGE_OFFSET)
+
+#endif
+
+#endif
+
 #endif
